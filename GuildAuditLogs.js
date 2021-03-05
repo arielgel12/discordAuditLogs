@@ -45,34 +45,33 @@ module.exports = async(client) => {
 
         if (message.member.hasPermission("MANAGE_SERVER")) {
 
-            guildAuditLogs.MANAGE_SERVER = false;
-        }
-        if (message.member.hasPermission("MANAGE_ROLES")) {
+            guildAuditLogs.MANAGE_SERVER = true;
+
+        } else if (message.member.hasPermission("MANAGE_ROLES")) {
 
             guildAuditLogs.MANAGE_ROLES = true;
-        }
-        if (message.member.hasPermission("MANAGE_WEBHOOKS")) {
+
+        } else if (message.member.hasPermission("MANAGE_WEBHOOKS")) {
 
             guildAuditLogs.MANAGE_WEBHOOKS = true;
-        }
-        if (message.member.hasPermission("MOVE_MEMBERS")) {
+
+        } else if (message.member.hasPermission("MOVE_MEMBERS")) {
 
             guildAuditLogs.MOVE_MEMBERS = true;
-        }
-        if (message.member.hasPermission("MANAGE_MEMBERS")) {
+
+        } else if (message.member.hasPermission("MANAGE_MEMBERS")) {
 
             guildAuditLogs.MANAGE_CHANNELS = true;
 
-        }
-        if (message.member.hasPermission("DEAFEN_MEMBERS")) {
+        } else if (message.member.hasPermission("DEAFEN_MEMBERS")) {
 
             guildAuditLogs.DEAFEN_MEMBERS = true;
-        }
-        if (message.member.hasPermission("MUTE_MEMBERS")) {
+
+        } else if (message.member.hasPermission("MUTE_MEMBERS")) {
 
             guildAuditLogs.MUTE_MEMBERS = true;
-        }
-        if (message.member.hasPermission("ADMINISTRATOR")) {
+
+        } else if (message.member.hasPermission("ADMINISTRATOR")) {
 
             guildAuditLogs.ADMINISTRATOR = true;
         }
@@ -90,6 +89,10 @@ module.exports = async(client) => {
             await channel.send(messageLogsEmbed)
 
             guildAuditLogs.MESSAGE_DELETE = true;
+
+            if (err) {
+                throw err;
+            }
         }
         if (guild.message.send) {
 
@@ -98,6 +101,10 @@ module.exports = async(client) => {
             const messageLogsEmbedCreate = new Discord.MessageEmbed()
                 .setTitle("message logs")
                 .setDescription(`a message has been created in ${messageChannel}, message owner: ${message.author.user}`);
+
+            if (err) {
+                throw err;
+            }
         }
 
         // voiceChannel logs
@@ -117,12 +124,20 @@ module.exports = async(client) => {
 
                 console.log(`a user joined a channel ${NewUserChannel}`)
 
+                if (err) {
+                    throw err;
+                }
+
 
             } else {
 
                 const voiceChannelLogsEmbedLeft = new Discord.MessageEmbed()
                     .setTitle("voice channel logs")
                     .setDescription(`user ${oldMember} left the channel ${oldUserChannel}`)
+
+                if (err) {
+                    throw err;
+                }
             }
 
 
@@ -145,6 +160,10 @@ module.exports = async(client) => {
 
                 console.log(`the user ${member} got roles: ${userNewRoles}`);
 
+                if (err) {
+                    throw err;
+                }
+
                 channel.send(rolesLogsEmbed);
 
             } else if (userOldRoles = userRoles) {
@@ -156,6 +175,10 @@ module.exports = async(client) => {
                 console.log(`the user ${member} got roles ${userRoles} removed, now he have roles: ${userOldRoles}`)
 
                 channel.send(rolesLogsEmbedRemove)
+
+                if (err) {
+                    throw err;
+                }
             }
 
         })
@@ -172,6 +195,10 @@ module.exports = async(client) => {
 
             console.log(`the user ${user} used the command: ` + message.content);
             channel.send(commandLogsEmbed);
+
+            if (err) {
+                throw err;
+            }
         }
 
         // channel logs
@@ -187,6 +214,9 @@ module.exports = async(client) => {
             console.log(`a channel has been created, channel name: ${guild.channels.name}`);
             channel.send(channelCreateEmbed)
 
+            if (err) {
+                throw err;
+            }
         }
 
 
